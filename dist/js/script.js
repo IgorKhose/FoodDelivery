@@ -111,24 +111,27 @@ showTabContent();
           modal=document.querySelector('.modal'),
           modalCloseBtn=document.querySelector('[data-close]');
 
+          function openModal(){
+            modal.classList.toggle('show');
+            document.body.style.overflow='hidden';
+            clearInterval(modalTimerId);
+        }
+    
+        function closeModal(){
+            modal.classList.toggle('show');
+            document.body.style.overflow='';
+        }  
+
     modalTrigger.forEach(btn=>{
-        btn.addEventListener('click',()=>{
+        btn.addEventListener('click',openModal); 
+    });
             // modal.classList.add('show');
             // modal.classList.remove('hide');
-            modal.classList.toggle('show');
-            // к body подключаем стиль, который не позволяет прокручивть 
-            // страницу
-            document.body.style.overflow='hidden';
-        });
-    });
-    function closeModal(){
-        modal.classList.toggle('show');
-        document.body.style.overflow='';
-    }      
     
     // закрываем модальное окно по клику на крестик
     modalCloseBtn.addEventListener('click',closeModal);
-    // закрываем страницу по нажатия на любое обасть 
+
+    // закрываем страницу по нажатию на любую область 
     // страницы за пределами modal__dialog
     modal.addEventListener('click',(e)=>{
         if(e.target==modal){
@@ -142,7 +145,16 @@ document.addEventListener('keydown',(e)=>{
         closeModal();
     }
 });
+const modalTimerId = setTimeout(openModal, 5000);
+// добавляем запуск модуля, когда пользователь долистает до конца страницы
+function showModalByScroll(){
+    if(window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight){
+        openModal();
+        window.removeEventListener('scroll',showModalByScroll);
+    }
+}
 
+window.addEventListener('scroll',showModalByScroll );
 
 });
 
