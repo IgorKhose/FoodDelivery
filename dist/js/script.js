@@ -145,7 +145,7 @@ document.addEventListener('keydown',(e)=>{
         closeModal();
     }
 });
-const modalTimerId = setTimeout(openModal, 5000);
+const modalTimerId = setTimeout(openModal, 60000);
 // добавляем запуск модуля, когда пользователь долистает до конца страницы
 function showModalByScroll(){
     if(window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight){
@@ -155,6 +155,103 @@ function showModalByScroll(){
 }
 
 window.addEventListener('scroll',showModalByScroll );
+
+// Используем классы для карточек
+class MenuCard{
+    constructor(src, alt, title, descr, price, parentSelector){
+        this.src=src;
+        this.alt=alt;
+        this.title=title;
+        this.descr=descr;
+        this.price=price;
+        this.parent=document.querySelector(parentSelector);
+        this.transfer=80;
+        this.changeToRU();
+    }
+    changeToRU(){
+        this.price*=this.transfer;
+    }
+    render(){
+       const element=document.createElement('div');
+       element.innerHTML=`
+       <div class="menu__item">
+                    <img src=${this.src} alt=${this.alt}>
+                    <h3 class="menu__item-subtitle">${this.title}</h3>
+                    <div class="menu__item-descr">${this.descr}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
+                    </div>
+                </div>
+       `;
+       this.parent.append(element);
+    }
+}
+new MenuCard(
+"img/tabs/vegy.jpg","vegy",
+"Меню 'Фитнес'",
+'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов.'+
+' Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+7,'.menu .container'
+).render();
+new MenuCard(
+"img/tabs/elite.jpg","elite",
+'Меню “Премиум”',
+'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение'+
+' блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+12,'.menu .container'
+).render();
+new MenuCard(
+"img/tabs/post.jpg","post",
+'Меню "Постное"',
+'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного'+
+' происхождения, молоко из миндаля, овса, кокоса или гречки,'+
+' правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+8,'.menu .container'
+).render();
+
+
+// new MenuCard(
+// "img/tabs/newmenu.jpg","theMenu",
+// "Меню 'Полезное'",
+// 'Новое, полезное меню разработано лучшими поварами, с учетом необходимой '+
+//  'нормы витаминов на весь день, а вкуснейшей рыбкой вам точно не захочется делиться по честному',
+//  10,'.menu .container'
+// ).render();
+
+
+
+// Альтернативный вариант
+// class Menu { 
+//   constructor(img, subtitle, descr, price,){
+//        this.img=img;
+//        this.subtitle=subtitle;
+//        this.descr=descr;
+//        this.price=price;
+//   }
+//     addMetoTheWebPage(){
+//         const newMenuDiv=document.createElement('div');
+//         newMenuDiv.classList.add('menu__item');
+//         newMenuDiv.innerHTML=`<img src="${this.img}" alt="vegy">
+//         <h3 class="menu__item-subtitle">${this.subtitle}</h3>
+//         <div class="menu__item-descr">${this.descr}</div>
+//         <div class="menu__item-divider"></div>
+//         <div class="menu__item-price">
+//             <div class="menu__item-cost">Цена:</div>
+//             <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
+//         </div>`;
+//         document.querySelector('.menu__field').querySelector('.container').append(newMenuDiv);
+//     }
+// }
+// const theNewMenu=new Menu('img/tabs/newmenu.jpg', 'Меню Полезное',
+// 'Новое, полезное меню разработано лучшими поварами, с учетом необходимой нормы витаминов'+
+//' на весь день, а вкуснейшей рыбкой вам точно не захочется делиться по честному','700');
+// theNewMenu.addMetoTheWebPage();
+
+
+
+
 
 });
 
