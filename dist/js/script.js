@@ -108,33 +108,36 @@ showTabContent();
     // добавляет обработку события- клика. Метод toggle проверяет наличия 
     // класса show. если его нет - добавляет, если есть - уберает
     const modalTrigger = document.querySelectorAll('[data-modal]'),
-          modal=document.querySelector('.modal'),
-          modalCloseBtn=document.querySelector('[data-close]');
+          modal=document.querySelector('.modal');
+
+          modalTrigger.forEach(btn=>{
+            btn.addEventListener('click',openModal); 
+        });
 
           function openModal(){
-            modal.classList.toggle('show');
+            //modal.classList.toggle('hide');
+            modal.classList.add('show');
+            modal.classList.remove('hide');
             document.body.style.overflow='hidden';
             clearInterval(modalTimerId);
         }
     
         function closeModal(){
-            modal.classList.toggle('show');
+            modal.classList.add('hide');
+            modal.classList.remove('show');
+            //modal.classList.toggle('show');
             document.body.style.overflow='';
         }  
 
-    modalTrigger.forEach(btn=>{
-        btn.addEventListener('click',openModal); 
-    });
-            // modal.classList.add('show');
-            // modal.classList.remove('hide');
     
-    // закрываем модальное окно по клику на крестик
-    modalCloseBtn.addEventListener('click',closeModal);
+            
+    
+    
 
     // закрываем страницу по нажатию на любую область 
     // страницы за пределами modal__dialog
     modal.addEventListener('click',(e)=>{
-        if(e.target==modal){
+        if(e.target==modal|| e.target.getAttribute('data-close')==''){
         closeModal();
         }
     });
@@ -218,47 +221,81 @@ new MenuCard(
 8,'.menu .container','menu__item'
 ).render();
 
+// Отправляем данные на сервер
+const forms=document.querySelectorAll('form');
+const message={
+    loading:'img/form/spinner.svg',
+    success:'Спасибо! Скоро мы с вами свяжемся',
+    failure: 'Что-то пошло не так ...'
 
-// new MenuCard(
-// "img/tabs/newmenu.jpg","theMenu",
-// "Меню 'Полезное'",
-// 'Новое, полезное меню разработано лучшими поварами, с учетом необходимой '+
-//  'нормы витаминов на весь день, а вкуснейшей рыбкой вам точно не захочется делиться по честному',
-//  10,'.menu .container'
-// ).render();
+};
+forms.forEach(item =>{
+    postData(item);
+});
+      function postData(form){
+        // У каждой кнопки есть свойство submit
+        // В первую очередь убераем стандартное поведение браузера
+        form.addEventListener('submit',(e)=>{
+          e.preventDefault();
+          const statusMessage=document.createElement('img');
+          statusMessage.src=message.loading;
+          statusMessage.style.cssText=`
+          display: block;
+          margin: 0 auto;
+          `;
+          
+          form.insertAdjacentElement('afterend',statusMessage);
 
+        // создаем объект запроса
+          const request = new XMLHttpRequest();
+            request.open('POST', 'js/server.php');
+            request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+            const formData = new FormData(form);
 
+            const object = {};
+            formData.forEach(function(value, key){
+                object[key] = value;
+            });
+            const json = JSON.stringify(object);
 
-// Альтернативный вариант
-// class Menu { 
-//   constructor(img, subtitle, descr, price,){
-//        this.img=img;
-//        this.subtitle=subtitle;
-//        this.descr=descr;
-//        this.price=price;
-//   }
-//     addMetoTheWebPage(){
-//         const newMenuDiv=document.createElement('div');
-//         newMenuDiv.classList.add('menu__item');
-//         newMenuDiv.innerHTML=`<img src="${this.img}" alt="vegy">
-//         <h3 class="menu__item-subtitle">${this.subtitle}</h3>
-//         <div class="menu__item-descr">${this.descr}</div>
-//         <div class="menu__item-divider"></div>
-//         <div class="menu__item-price">
-//             <div class="menu__item-cost">Цена:</div>
-//             <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
-//         </div>`;
-//         document.querySelector('.menu__field').querySelector('.container').append(newMenuDiv);
-//     }
-// }
-// const theNewMenu=new Menu('img/tabs/newmenu.jpg', 'Меню Полезное',
-// 'Новое, полезное меню разработано лучшими поварами, с учетом необходимой нормы витаминов'+
-//' на весь день, а вкуснейшей рыбкой вам точно не захочется делиться по честному','700');
-// theNewMenu.addMetoTheWebPage();
+            request.send(json);
 
+            request.addEventListener('load', () => {
+                if (request.status === 200) {
+                    console.log(request.response);
+                    showThanksModal(message.success);
+                    statusMessage.remove();
+                    form.reset();
+                } else {
+                    showThanksModal(message.failure);
+                }
+            });
+        });
+    }
 
+      function showThanksModal(message){
+          const privModalDial=document.querySelector('.modal__dialog');
 
+          privModalDial.classList.add('hide');
+          openModal();
+
+          const thanksModal=document.createElement('div');
+          thanksModal.classList.add('modal__dialog');
+          thanksModal.innerHTML=`
+            <div class="modal__content">
+              <div class="modal__close" data-close>×</div>
+              <div class="modal__title">${message}</div>
+            </div>
+          `;
+
+          document.querySelector('.modal').append(thanksModal);
+          setTimeout(()=>{
+              thanksModal.remove();
+              privModalDial.classList.add('show');
+              privModalDial.classList.remove('hide');
+              closeModal();
+          },4000);
+      }
 
 
 });
-
