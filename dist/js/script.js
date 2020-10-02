@@ -296,6 +296,8 @@ forms.forEach(item =>{
               closeModal();
           },4000);
       }
-
-
+      console.log('Test');
+      fetch('https://jsonplaceholder.typicode.com/todos/1')
+        .then(response => response.json())
+        .then(json => console.log(json));
 });
