@@ -284,9 +284,24 @@ const postData = async (url,data)=>{
               closeModal();
           },4000);
       }
-    // fetch('http://localhost:3000/menu')
-    // .then(data=>data.json())
-    // .then(res=>console.log(res));
+
+    //Slide
+    const sliderNext=document.querySelector('.offer__slider-next');
+    const sliderPrev=document.querySelector('.offer__slider-prev');
+
+    const changeSlide=document.querySelectorAll('.offer__slide');
+    const slideArr=Object.entries(changeSlide);
+    let counter =0;
+
+    // for(let i=0;i<slideArr.length;i++){
+    //         if(counter==slideArr[i]){
+    //             slideArr[i].classList.add('show');
+    //         } else{
+    //             slideArr[i].classList.add('hide');
+    //         }
+    //     }
+    console.log(slideArr);
+    
 });
 
 
