@@ -18,5 +18,9 @@
   "homepage": "https://github.com/IgorKhose/FoodDelivery#readme",
   "dependencies": {
     "json-server": "^0.16.2"
+  },
+  "devDependencies": {
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
   }
 }
