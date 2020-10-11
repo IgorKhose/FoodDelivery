@@ -1,3 +1,4 @@
+import {getResource} from '../services/services';
 function cards(){
     // Используем классы для карточек
 class MenuCard{
@@ -38,14 +39,7 @@ class MenuCard{
        this.parent.append(element);
     }
 }
-const getResource = async (url)=>{
-    const res = await fetch(url);
-    if(!res.ok){
-       throw new Error(`Could not fetch${url}, status: ${res.status}`);
-    }
 
-    return await res.json();
-};
 // Добавляем работу с библиотекой axios
 axios.get('http://localhost:3000/menu')
 .then(data=>{
@@ -54,4 +48,4 @@ axios.get('http://localhost:3000/menu')
     });
 });
 }
-module.exports=cards;
+export default cards;

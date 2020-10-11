@@ -101,4 +101,4 @@ getDynamicnformation('#height');
 getDynamicnformation('#weight');
 getDynamicnformation('#age');
 }
-module.exports=calc;
+export default calc;

@@ -1,9 +1,9 @@
-function timer(){
+function timer(id, deadline){
 //Timer
     // Задаем крайнюю дату в переменной, затем вычисляем разницу 
     // между текущей датой и дедлайном  в милисекундах. 
     // далее от результата можно посчитать сколько осталось в днях, часах и тд.
-    const deadline='2020-10-28';
+    
     function getTimeRemaining(endtime){
         const t = Date.parse(endtime)-Date.parse(new Date()),
               days= Math.floor(t/ (1000*60*60*24)),
@@ -55,6 +55,6 @@ function timer(){
                   }
               }
     }
-    setCloack('.timer', deadline);
+    setCloack(id, deadline);
 }
-module.exports=timer;
+export default timer;
