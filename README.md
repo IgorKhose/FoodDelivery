@@ -1,2 +1,3 @@
-Веб-сайт для заказа еды. Реализованы слайдеры, модальные окна для обратной связи, калькулятор калорий, таймер отсчета до окончания спец-предложения. 
-Логика сайта разбита на модули, собранные через Webpack. В качестве аналогка бд используется json-файл. 
+Foof delivery.
+
+Website for ordering food. Sliders, modal windows for feedback, a calorie calculator, a countdown timer until the end of a special offer have been implemented. The site logic is split into modules assembled via Webpack. A json file is used as an analogue of the database.
